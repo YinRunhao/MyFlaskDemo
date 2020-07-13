@@ -1,66 +1,35 @@
 swagger: "2.0"
 info:
-  description: "Password Reminder Swagger"
+  description: "Flask 小型API Demo"
   version: "1.0"
-  title: "Password Reminder"
+  title: "Flask Demo"
+# Controllers
 tags:
   - name: "Api"
-    description: "api文档"
+    description: "Demo接口"
 schemes:
   - "http"
+# 可访问的URL
 paths:
-  /api/test/{Id}:
+  /api:
+    # Http方法
     get:
+      # 属于哪个Controller
       tags:
         - "Api"
       summary: "测试连通性的接口"
       # 回送的请求头
       produces:
         - "application/json"
-      parameters:
-        - name: "Id"
-          # 从url中带参数
-          in: "path"
-          description: "测试参数"
-          required: true
       responses:
         "200":
           description: "请求成功"
+          # 回送类型
           schema:
-            $ref: "#/definitions/ApiResult"
-  /api/user:
-    post:
-      tags:
-        - "Api"
-      summary: "用户注册"
-      # 接受的请求头
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        # 参数放在body里面
-        - in: "body"
-          name: "body"
-          description: "新增的用户信息"
-          required: true
-          schema:
-            $ref: "#/definitions/User"
-      responses:
-        "200":
-          description: "注册成功"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "400":
-          description: "请求失败"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "404":
-          description: "传参错误"
-          schema:
+            # 绑定后面定义的类型
             $ref: "#/definitions/ApiResult"
   /api/login:
-    put:
+    post:
       tags:
         - "Api"
       summary: "用户登录"
@@ -73,32 +42,24 @@ paths:
         # 参数放在body里面
         - in: "body"
           name: "body"
-          description: "用户登录信息"
+          description: "登录信息"
           required: true
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/LoginDto"
       responses:
         "200":
-          description: "登录成功"
+          description: "登录成功，回送中带有Token"
           schema:
             $ref: "#/definitions/ApiResult"
         "400":
-          description: "登录失败"
+          description: "请求失败"
           schema:
             $ref: "#/definitions/ApiResult"
-        "401":
-          description: "密码错误"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "404":
-          description: "用户不存在"
-          schema:
-            $ref: "#/definitions/ApiResult"
-  /api/stores:
+  /api/info:
     get:
       tags:
         - "Api"
-      summary: "获取用户记录"
+      summary: "获取用户信息"
       # 接受的请求头
       consumes:
         - "application/json"
@@ -109,138 +70,37 @@ paths:
           description: "获取记录成功"
           schema:
             $ref: "#/definitions/ApiResult"
-        "404":
-          description: "获取记录失败"
-          schema:
-            $ref: "#/definitions/ApiResult"
-  /api/logout:
-    put:
-      tags:
-        - "Api"
-      summary: "用户注销"
-      # 接受的请求头
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "注销成功"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "400":
-          description: "注销失败"
-          schema:
-            $ref: "#/definitions/ApiResult"
-  /api/store:
-    put:
-      tags:
-        - "Api"
-      summary: "编辑记录"
-      # 接受的请求头
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        # 参数放在body里面
-        - in: "body"
-          name: "body"
-          description: "新增或修改的用户记录"
-          required: true
-          schema:
-            $ref: "#/definitions/Store"
-      responses:
-        "200":
-          description: "修改成功"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "201":
-          description: "新增成功"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "400":
-          description: "新增失败"
-          schema:
-            $ref: "#/definitions/ApiResult"
-  /api/store/{IdStr}:
-    delete:
-      tags:
-        - "Api"
-      summary: "通过Id删除用户记录"
-      # 回送的请求头
-      produces:
-        - "application/json"
-      parameters:
-        - name: "IdStr"
-          # 从url中带参数
-          in: "path"
-          description: "要删除的用户记录Id"
-          required: true
-      responses:
-        "200":
-          description: "删除成功"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "204":
-          description: "没有该记录"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "400":
-          description: "操作失败"
-          schema:
-            $ref: "#/definitions/ApiResult"
-        "404":
-          description: "参数错误"
-          schema:
-            $ref: "#/definitions/ApiResult"
+        "403":
+          description: "Token错误"
+        "401":
+          description: "请求未带Token"
+# 类型定义
 definitions:
-  User:
+  LoginDto:
     type: "object"
     required:
-      - Id
-      - UserName
-      - Password
+      - userNm
+      - psd
     properties:
-      Id:
-        type: "integer"
-        format: "int64"
-      UserName:
+      userNm:
         type: "string"
-      Password:
+        description: "用户名"
+      psd:
         type: "string"
-      LastTime:
-        type: "string"
-        format: "date-time"
-        description: "用户最后一次的操作时间"
-      Online:
-        type: "integer"
-        format: "int32"
-      Chance:
-        type: "integer"
-        format: "int32"
-  Store:
+        description: "密码"
+  UserDto:
     type: "object"
     required:
-      - Id
       - UserName
-      - Password
-      - Description
-      - UserId
     properties:
-      Id:
-        type: "integer"
-        format: "int64"
       UserName:
         type: "string"
-      Password:
+      Sex:
         type: "string"
-      Description:
+        description: "male:男; female:女"
+      City:
         type: "string"
-        description: "账号描述"
-      UserId:
-        type: "integer"
-        format: "int64"
+        description: "所在城市"
   ApiResult:
     type: "object"
     properties:

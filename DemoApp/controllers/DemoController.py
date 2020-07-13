@@ -39,7 +39,7 @@ def login():
         result.opera_fail(ErrorCode.ParameterErr)
         return action_results.bad_request(result)
 
-    # 验证用户并获取用户信息，这里作为测试接口100%成功
+    # 验证用户并获取用户信息
     result = logic_model.check_user(userNm, psd)
     # 成功则返回OK(200)，并夹带Token
     if result.errorCode == ErrorCode.OK.value:
