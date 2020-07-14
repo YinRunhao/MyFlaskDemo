@@ -16,3 +16,14 @@ def get_user_info(usrNm: str, psd: str) -> dto_models.UserDto:
             dto.Sex = dbUsr.Sex
             dto.UserName = dbUsr.UserName
     return dto
+
+
+def get_user_id(usrNm: str) -> int:
+    """
+        以用户名获取用户ID, 找不到返回-1
+    """
+    ret = -1
+    dbUsr = db_models.User.query.filter(db_models.User.UserName == usrNm).first()
+    if dbUsr is not None:
+        ret = dbUsr.Id
+    return ret

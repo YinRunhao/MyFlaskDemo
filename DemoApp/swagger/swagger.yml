@@ -74,6 +74,33 @@ paths:
           description: "Token错误"
         "401":
           description: "请求未带Token"
+  /api/articles/{usrNm}:
+    get:
+      tags:
+        - "Api"
+      summary: "获取用户的所有文章"
+      # 回送的请求头
+      produces:
+        - "application/json"
+      parameters:
+        - name: "usrNm"
+          # 从url中带参数
+          in: "path"
+          description: "用户名"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResult"
+        "400":
+          description: "操作失败"
+          schema:
+            $ref: "#/definitions/ApiResult"
+        "404":
+          description: "用户名不存在"
+          schema:
+            $ref: "#/definitions/ApiResult"
 # 类型定义
 definitions:
   LoginDto:
@@ -101,6 +128,15 @@ definitions:
       City:
         type: "string"
         description: "所在城市"
+  ArticleDto:
+    type: "object"
+    properties:
+      Title:
+        type: "string"
+        description: "标题"
+      Content:
+        type: "string"
+        description: "内容"
   ApiResult:
     type: "object"
     properties:

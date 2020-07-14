@@ -38,3 +38,20 @@ class User(db.Model):
     City = db.Column('city', db.String(32))
     # 联系电话
     Tel = db.Column('tel', db.String(32))
+
+
+class Article(db.Model):
+    """
+        数据库文章表映射类，一个用户
+        会有多篇文章
+    """
+    __tablename__ = 'tbArticle'
+
+    # 唯一ID
+    Id = db.Column('idarticle', db.Integer, primary_key=True, autoincrement=True)
+    # 标题
+    Title = db.Column('title', db.String(64))
+    # 内容
+    Content = db.Column('content', db.String)
+    # 作者ID
+    AuthorId = db.Column('author', db.Integer)

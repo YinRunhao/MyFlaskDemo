@@ -60,3 +60,20 @@ def my_info():
     """
     usrInfo = get_jwt_identity()
     return action_results.ok(usrInfo)
+
+
+@route_demo.route('/articles/<usrNm>', methods=['GET'])
+def get_articles(usrNm):
+    """
+    请求该用户的所有文章
+    """
+    result = logic_model.get_user_articles(usrNm)
+    if result.errorCode == ErrorCode.OK.value:
+        # 成功 200
+        return action_results.ok(result)
+    elif result.errorCode == ErrorCode.ResourceNotFound.value:
+        # 用户名不正确 404
+        return action_results.not_found(result)
+    else:
+        # 异常 400
+        return action_results.bad_request(result)
