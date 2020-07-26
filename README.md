@@ -63,5 +63,6 @@ pip3 install pymysql
         |-- log                          // 日志模块
         |-- swagger                      // Swagger在线Api文档模块
         |-- config                       // 程序相关配置模块
+        |-- cors                         // 跨域配置模块
         |-- __init__.py
 ```

@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from flask_cors import CORS
 from .models import db_models
 from . import log
 from . import swagger
 from . import jwt
 from . import config
+from . import cors
 
 
 def create_app():
     # 生成WebApp
     app = Flask(__name__)
+    # 跨域
+    cors.init(app)
     # 初始化配置模块
     config.init()
-    # 跨域
-    CORS(app, supports_credentials=True)
     # 初始化数据库映射和链接
     db_models.init(app)
     # 初始化日志组件
